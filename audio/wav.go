@@ -5,46 +5,68 @@ import (
 	"fmt"
 	"log"
 	"math"
+	"os"
 
-	"github.com/r9y9/gossp"
-	"github.com/r9y9/gossp/io"
+	"github.com/go-audio/wav"
 	"github.com/r9y9/gossp/stft"
 	"github.com/r9y9/gossp/window"
 )
 
-/*
-	 func wavSpec() {
-		f, err := os.Open("../wav/bib.wav")
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer f.Close()
-		d := wav.NewDecoder(f)
-		if !d.IsValidFile() {
-			log.Fatal("get scammed buddy")
-		}
-		fmt.Println(d.SampleRate)
-		fmt.Println(d.SampleBitDepth())
-
-}
-*/
 func createSpec() {
-	test_recording := flag.String("i", "../wav/fixed.wav", "fixed.wav")
+	test_recording := flag.String("i", "../wav/fixed_mono.wav", "fixed_mono.wav")
 	flag.Parse()
 
-	w, err := io.ReadWav(*test_recording)
+	file, err := os.Open(*test_recording)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Error opening WAV file:", err)
+	}
+	defer file.Close()
+
+	// fuck gossp, os built diff( ithink)
+	decoder := wav.NewDecoder(file)
+	if !decoder.IsValidFile() {
+		log.Fatal("Invalid Wav file")
 	}
 
-	data := w.GetMonoData()
+	buf, err := decoder.FullPCMBuffer()
+	if err != nil {
+		log.Fatal("error decoding WAv data:", err)
+	}
+
+	// Confirm we have audio data
+	if len(buf.Data) == 0 {
+		log.Fatal("error: Wav file does not contain data")
+	}
+
+	fmt.Printf("Sample Rate: %d, Channels: %d, Bit Depth: %d\n",
+		decoder.SampleRate, decoder.NumChans, decoder.BitDepth)
+
+	bitdepth := decoder.BitDepth
+	if bitdepth < 1 || bitdepth > 32 {
+		log.Fatal("nuh uh:", bitdepth)
+	}
+	data := make([]float64, len(buf.Data))
+	for i, sample := range buf.Data {
+		data[i] = float64(sample) / float64(int(1)<<(bitdepth-1))
+	}
+
 	s := &stft.STFT{
-		FrameShift: int(float64(w.SampleRate) / 100.0),
+		FrameShift: int(float64(decoder.SampleRate) / 100.0),
 		FrameLen:   2048,
 		Window:     window.CreateHanning(2048),
 	}
-	spectrogram, _ := gossp.SplitSpectrogram(s.STFT(data))
-	PrintMatrixAsGnuplotFormat(spectrogram)
+	spectrogram := s.STFT(data)
+	convertedSpectrogram := make([][]float64, len(spectrogram))
+	for i, row := range spectrogram {
+		convertedSpectrogram[i] = make([]float64, len(row))
+		for j, val := range row {
+			// Use the magnitude of the complex number
+			convertedSpectrogram[i][j] = real(val)*real(val) + imag(val)*imag(val) // Magnitude squared (can use sqrt() for actual magnitude)
+		}
+	}
+
+	PrintMatrixAsGnuplotFormat(convertedSpectrogram) // need to fix this shit why am i stuck is this hard
+	//nvm gpt came in clutch :)
 }
 
 func PrintMatrixAsGnuplotFormat(matrix [][]float64) {
@@ -55,14 +77,6 @@ func PrintMatrixAsGnuplotFormat(matrix [][]float64) {
 		}
 		fmt.Println("")
 	}
-}
-
-func tft() {
-	t := flag.String("i", "../wav/Recording.wav", "Recording")
-	flag.Parse()
-
-	fmt.Println("FilePath:", *t)
-	//test file path
 }
 
 func main() {
