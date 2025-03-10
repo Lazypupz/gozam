@@ -1,4 +1,4 @@
-package main
+package shazam
 
 import (
 	"flag"
@@ -81,4 +81,5 @@ func PrintMatrixAsGnuplotFormat(matrix [][]float64) {
 
 func main() {
 	createSpec()
+
 }
