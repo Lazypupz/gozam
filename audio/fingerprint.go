@@ -9,11 +9,18 @@ const (
 	targetZone = 5 // offset in the arary idek? ?? ? ? ??
 )
 
-func MaxFilter(spec [][]float64) []float64 {
-	anc := make([]float64, len(spec))
+func MaxFilter(spec [][]float64) ([]float64, float64, float64) {
+	anc := make([]float64, 1024)
+	freqntime := make([][]int, len(spec))
 
-	for _, vec := range spec {
-		for _, val := range vec[:1024] {
+	for i, vec := range spec {
+		time := make([]int, len(spec))
+		time = append(time, i)
+		freqntime = append(freqntime, time)
+
+		for j, val := range vec[:1024] {
+			freq := make([]int, len(spec))
+			freq = append()
 			newVal := math.Log(val)
 
 			if newVal > maxFreq {
@@ -30,5 +37,5 @@ func MaxFilter(spec [][]float64) []float64 {
 
 func anchorMap(anc []float64) map[int]float64 {
 	ancMap := make(map[int]float64)
-	ancMap
+	//ancMap
 }
