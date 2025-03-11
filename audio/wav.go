@@ -12,7 +12,7 @@ import (
 	"github.com/r9y9/gossp/window"
 )
 
-func createSpec() {
+func createSpec() [][]float64 {
 	test_recording := flag.String("i", "../wav/fixed_mono.wav", "fixed_mono.wav")
 	flag.Parse()
 
@@ -67,6 +67,7 @@ func createSpec() {
 
 	PrintMatrixAsGnuplotFormat(convertedSpectrogram) // need to fix this shit why am i stuck is this hard
 	//nvm gpt came in clutch :)
+	return convertedSpectrogram
 }
 
 func PrintMatrixAsGnuplotFormat(matrix [][]float64) {
