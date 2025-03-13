@@ -1,10 +1,12 @@
-package shazam
+package main
 
 import (
 	"flag"
 	"fmt"
+	"image"
 	"log"
 	"math"
+	"math/cmplx"
 	"os"
 
 	"github.com/go-audio/wav"
@@ -70,6 +72,23 @@ func createSpec() [][]float64 {
 	return convertedSpectrogram
 }
 
+func spectrogramToImg(spectrogram [][]complex128, outputPath string) error {
+
+	numWindows := len(spectrogram)
+	freqBins := len(spectrogram[0])
+	img := image.NewGray(image.Rect(0, 0, freqBins, numWindows))
+
+	maxMagnitude := 0.0
+	for i := 0; i < numWindows; i++ {
+		for j := 0; j < numWindows; j++ {
+			magnitude := cmplx.Abs(spectrogram[i][j])
+			if magnitude > maxMagnitude {
+				maxMagnitude = magnitude
+			}
+		}
+	}
+}
+
 func PrintMatrixAsGnuplotFormat(matrix [][]float64) {
 	fmt.Println("#", len(matrix[0]), len(matrix)/2)
 	for i, vec := range matrix {
@@ -78,9 +97,4 @@ func PrintMatrixAsGnuplotFormat(matrix [][]float64) {
 		}
 		fmt.Println("")
 	}
-}
-
-func main() {
-	createSpec()
-
 }

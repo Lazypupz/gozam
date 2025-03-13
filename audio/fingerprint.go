@@ -1,12 +1,11 @@
-package shazam
+package main
 
 import (
-	"fmt"
 	"math"
 )
 
 const (
-	maxFreq    = -8.50
+	maxFreq    = -18.2
 	targetZone = 10 // offset in the arary idek? ?? ? ? ??
 )
 
@@ -19,7 +18,7 @@ func MaxFilter(spec [][]float64) []float64 {
 
 			newVal := math.Log(val)
 
-			if newVal > maxFreq {
+			if newVal < maxFreq {
 				anc = append(anc, newVal) // fix this and the whole thing
 
 			}
@@ -30,15 +29,12 @@ func MaxFilter(spec [][]float64) []float64 {
 	return anc
 }
 
-// need to implement target zone before the anchorMap function
-
-func anchorMap(anc []float64) map[int]float64 {
+func AnchorMap() map[int]float64 {
 	newAnc := cliTargetZone()
 	ancMap := make(map[int]float64)
 	for i, val := range newAnc {
 		ancMap[i] = val
 	}
-	fmt.Println(ancMap)
 	return ancMap
 
 }

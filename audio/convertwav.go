@@ -1,4 +1,4 @@
-package shazam
+package main
 
 import (
 	"fmt"

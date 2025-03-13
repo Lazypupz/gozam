@@ -1,4 +1,4 @@
-package shazam
+package main
 
 type anchor struct {
 	i   float64

@@ -1,6 +1,4 @@
-package shazam
-
-func genHash()
+package main
 
 /*	rand.Shuffle(6, func([i]let int, [j]let int) {
 		let := []string{
@@ -22,3 +20,6 @@ func cliTargetZone() []float64 {
 	return newAnc
 
 }
+
+
+
