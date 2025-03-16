@@ -4,6 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"image"
+	"image/color"
+	"image/png"
 	"log"
 	"math"
 	"math/cmplx"
@@ -87,6 +89,28 @@ func spectrogramToImg(spectrogram [][]complex128, outputPath string) error {
 			}
 		}
 	}
+
+	for i := 0; i < numWindows; i++ {
+		for j := 0; j < freqBins; j++ {
+			magnitude := cmplx.Abs(spectrogram[i][j])
+			intensity := uint8(math.Floor(255 * (magnitude / maxMagnitude)))
+			img.SetGray(j, i, color.Gray{Y: intensity})
+		}
+	}
+
+	file, err := os.Create(outputPath)
+	if err != nil {
+		return err
+
+	}
+	defer file.Close()
+
+	err = png.Encode(file, img)
+	if err != nil {
+		return err
+
+	}
+	return nil
 }
 
 func PrintMatrixAsGnuplotFormat(matrix [][]float64) {
