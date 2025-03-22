@@ -1,4 +1,4 @@
-package main
+package spectrogram
 
 import (
 	"flag"
@@ -12,8 +12,8 @@ import (
 	"github.com/r9y9/gossp/window"
 )
 
-func createSpec() [][]complex128 {
-	test_recording := flag.String("i", "../wav/fixed_mono.wav", "fixed_mono.wav")
+func CreateSpec() [][]complex128 {
+	test_recording := flag.String("i", "wav/fixed_mono.wav", "fixed_mono.wav")
 	flag.Parse()
 
 	file, err := os.Open(*test_recording)

@@ -1,7 +1,6 @@
 package spectrogram
 
 import (
-	"fmt"
 	"image"
 	"image/color"
 	"image/png"
@@ -10,7 +9,7 @@ import (
 	"os"
 )
 
-func spectrogramToImg(spectrogram [][]complex128, outputPath string) ([][]float64, error) {
+func SpectrogramToImg(spectrogram [][]complex128, outputPath string) ([][]float64, error) {
 
 	numWindows := len(spectrogram)
 	freqBins := len(spectrogram[0])
@@ -66,24 +65,4 @@ func spectrogramToImg(spectrogram [][]complex128, outputPath string) ([][]float6
 
 	}
 	return peaks, nil
-}
-
-func main() {
-
-	spectrogram := createSpec()
-
-	outputPath := "spectrogram.png"
-	peaks, err := spectrogramToImg(spectrogram, outputPath)
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println("Spectrogram image saved to", outputPath)
-
-	for i, val := range peaks {
-		for j := range val {
-			fmt.Println(peaks[i][j])
-		}
-	}
-
 }
