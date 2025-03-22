@@ -3,12 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
-	"image"
-	"image/color"
-	"image/png"
 	"log"
 	"math"
-	"math/cmplx"
 	"os"
 
 	"github.com/go-audio/wav"
@@ -16,7 +12,7 @@ import (
 	"github.com/r9y9/gossp/window"
 )
 
-func createSpec() [][]float64 {
+func createSpec() [][]complex128 {
 	test_recording := flag.String("i", "../wav/fixed_mono.wav", "fixed_mono.wav")
 	flag.Parse()
 
@@ -65,60 +61,11 @@ func createSpec() [][]float64 {
 		convertedSpectrogram[i] = make([]float64, len(row))
 		for j, val := range row {
 			// Use the magnitude of the complex number
-			convertedSpectrogram[i][j] = real(val)*real(val) + imag(val)*imag(val) // Magnitude squared (can use sqrt() for actual magnitude)
+			convertedSpectrogram[i][j] = math.Sqrt(real(val)*real(val) + imag(val)*imag(val)) // Magnitude squared (can use sqrt() for actual magnitude)
 		}
 	}
 
-	PrintMatrixAsGnuplotFormat(convertedSpectrogram) // need to fix this shit why am i stuck is this hard
+	//PrintMatrixAsGnuplotFormat(convertedSpectrogram) // need to fix this shit why am i stuck is this hard
 	//nvm gpt came in clutch :)
-	return convertedSpectrogram
-}
-
-func spectrogramToImg(spectrogram [][]complex128, outputPath string) error {
-
-	numWindows := len(spectrogram)
-	freqBins := len(spectrogram[0])
-	img := image.NewGray(image.Rect(0, 0, freqBins, numWindows))
-
-	maxMagnitude := 0.0
-	for i := 0; i < numWindows; i++ {
-		for j := 0; j < numWindows; j++ {
-			magnitude := cmplx.Abs(spectrogram[i][j])
-			if magnitude > maxMagnitude {
-				maxMagnitude = magnitude
-			}
-		}
-	}
-
-	for i := 0; i < numWindows; i++ {
-		for j := 0; j < freqBins; j++ {
-			magnitude := cmplx.Abs(spectrogram[i][j])
-			intensity := uint8(math.Floor(255 * (magnitude / maxMagnitude)))
-			img.SetGray(j, i, color.Gray{Y: intensity})
-		}
-	}
-
-	file, err := os.Create(outputPath)
-	if err != nil {
-		return err
-
-	}
-	defer file.Close()
-
-	err = png.Encode(file, img)
-	if err != nil {
-		return err
-
-	}
-	return nil
-}
-
-func PrintMatrixAsGnuplotFormat(matrix [][]float64) {
-	fmt.Println("#", len(matrix[0]), len(matrix)/2)
-	for i, vec := range matrix {
-		for j, val := range vec[:1024] {
-			fmt.Println(i, j, math.Log(val))
-		}
-		fmt.Println("")
-	}
+	return spectrogram
 }

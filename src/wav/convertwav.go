@@ -12,7 +12,7 @@ import (
 // THIS CODE WAS DIRECTLY COPIED FROM SEEK_TUNE AS I HAD DIDNT WANT TO WASTE TIME ON THIS SIMPLE CODE
 // and i couldnt be bothered to implement ffmpeg cause i didnt know you would execute through command line but also my
 // ffmpeg only works through powershell so maybe i cant dp tat idk i dont care
-func ConvertToWave(inputFilePath string, channels int) (wavFilePath string, err error) {
+func ConvertToWav(inputFilePath string, channels int) (wavFilePath string, err error) {
 	_, err = os.Stat(inputFilePath)
 	if err != nil {
 		log.Fatal(err)
