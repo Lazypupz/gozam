@@ -46,7 +46,7 @@ func SpectrogramToImg(spectrogram [][]complex128, outputPath string) ([][]float6
 				peaks[i][j] = realSpec[i][j]
 			}
 			if !isPeak(realSpec, i, j) {
-				peaks[i][j] = 0
+				peaks[i][j] = math.NaN()
 			}
 
 		}

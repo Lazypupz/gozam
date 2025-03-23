@@ -1,12 +1,14 @@
 package spectrogram
 
+import "math"
+
 func convert_spec_to_float(spectrogram [][]complex128) [][]float64 {
 
 	convertedSpectrogram := make([][]float64, len(spectrogram))
 	for i, row := range spectrogram {
 		convertedSpectrogram[i] = make([]float64, len(row))
 		for j, col := range row {
-			convertedSpectrogram[i][j] = real(col)*real(col) + imag(col)*imag(col)
+			convertedSpectrogram[i][j] = math.Sqrt(real(col)*real(col)+imag(col)*imag(col)) * 1000
 		}
 	}
 	return convertedSpectrogram

@@ -1,13 +1,11 @@
 package main
 
 import (
-	"fmt"
-
-	"github.com/Lazypupz/gozam/src/spectrogram"
+	"github.com/Lazypupz/gozam/src/wav"
 )
 
 func main() {
-	spec := spectrogram.CreateSpec()
+	/*spec := spectrogram.CreateSpec()
 	outputPath := "spectrogram.png"
 	peaks, err := spectrogram.SpectrogramToImg(spec, outputPath)
 	if err != nil {
@@ -21,5 +19,9 @@ func main() {
 			fmt.Println(peaks[i][j])
 		}
 	}
+	*/
+
+	//wav.Record("recording.wav")
+	wav.GetWavData("recording.wav")
 
 }

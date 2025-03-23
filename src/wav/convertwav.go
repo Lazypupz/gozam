@@ -1,4 +1,4 @@
-package main
+package wav
 
 import (
 	"fmt"
@@ -55,7 +55,7 @@ func ConvertToWav(inputFilePath string, channels int) (wavFilePath string, err e
 
 //if alr wav ^(where is the down arrow)
 
-func ReformatWav(inputFilePath string, channels int) (reformatedFilePath string, err error) {
+func ReformatWav(inputFilePath string, channels uint) (reformatedFilePath string, err error) {
 	if channels < 1 || channels > 1 {
 		channels = 1
 	}
