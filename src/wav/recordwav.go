@@ -60,9 +60,8 @@ func GetWavData(inputFile string) int {
 		fmt.Println("Error", cErr)
 		return 0
 	}
-	if cNum != 0 {
-		fmt.Println("no numbers")
-	}
+
 	return cNum
 	// --todo doesnt output anything, doesnt cause errors also
+	// nvm it works i just forgot to print the output
 }

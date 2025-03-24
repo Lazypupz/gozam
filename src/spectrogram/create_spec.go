@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"math"
 	"os"
 
 	"github.com/go-audio/wav"
@@ -12,8 +11,8 @@ import (
 	"github.com/r9y9/gossp/window"
 )
 
-func CreateSpec() [][]complex128 {
-	test_recording := flag.String("i", "wav/fixed_mono.wav", "fixed_mono.wav")
+func CreateSpec(inputFile string) [][]complex128 {
+	test_recording := flag.String("i", "../recording.wav", inputFile)
 	flag.Parse()
 
 	file, err := os.Open(*test_recording)
@@ -56,14 +55,14 @@ func CreateSpec() [][]complex128 {
 		Window:     window.CreateHanning(2048),
 	}
 	spectrogram := s.STFT(data)
-	convertedSpectrogram := make([][]float64, len(spectrogram))
-	for i, row := range spectrogram {
+	//convertedSpectrogram := make([][]float64, len(spectrogram))
+	/*for i, row := range spectrogram {
 		convertedSpectrogram[i] = make([]float64, len(row))
 		for j, val := range row {
 			// Use the magnitude of the complex number
 			convertedSpectrogram[i][j] = math.Sqrt(real(val)*real(val) + imag(val)*imag(val)) // Magnitude squared (can use sqrt() for actual magnitude)
 		}
-	}
+	} */
 
 	//PrintMatrixAsGnuplotFormat(convertedSpectrogram) // need to fix this shit why am i stuck is this hard
 	//nvm gpt came in clutch :)

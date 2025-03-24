@@ -1,19 +1,11 @@
 package fingerprint
 
-func CreateHash(spec [][]float64) {
-	// hash looks like (freqeuncy1,  freq2, time difference) -> song_id)
+type keyFreq struct {
+	peakFreq   float64
+	targetFreq float64
+}
 
-	sampleRate := 44100 // Sample rate in Hz
-	hopSize := 512
-
-	type Song_id struct {
-		freq1    float64
-		freq2    float64
-		time_dif float64
-	}
-
-	id := Song_id{}
-
+func createFreqArray(spec [][]float64) []float64 {
 	freqArray := make([]float64, len(spec))
 	for _, val := range spec {
 		for j := range val {
@@ -25,14 +17,27 @@ func CreateHash(spec [][]float64) {
 
 		}
 	}
+	return freqArray
+}
+
+func CreateHash(freqArray []float64) map[keyFreq]float64 {
+	// hash looks like (freqeuncy1,  freq2, time difference) -> song_id)
+
+	sampleRate := 44100 // Sample rate in Hz
+	hopSize := 1024
 
 	for i := 0; i < len(freqArray); i++ {
-
-		id.freq1 = freqArray[i]
-		id.freq2 = freqArray[i+1]
-		for time, _ := range spec {
+		time_dif := 0.0
+		freq1 := freqArray[i]
+		freq2 := freqArray[i+1]
+		for time, _ := range freqArray {
 			timeindex := float64(time*hopSize) / float64(sampleRate)
-			id.time_dif = timeindex
+			time_dif = timeindex
+
 		}
+		hashTable := make(map[keyFreq]float64)
+		hashTable[keyFreq{peakFreq: freq1, targetFreq: freq2}] = time_dif
+		return hashTable
 	}
+
 }

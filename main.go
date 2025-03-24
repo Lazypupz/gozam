@@ -1,6 +1,10 @@
 package main
 
 import (
+	"fmt"
+
+	"github.com/Lazypupz/gozam/src/fingerprint"
+	"github.com/Lazypupz/gozam/src/spectrogram"
 	"github.com/Lazypupz/gozam/src/wav"
 )
 
@@ -22,6 +26,15 @@ func main() {
 	*/
 
 	//wav.Record("recording.wav")
-	wav.GetWavData("recording.wav")
+	audio_file := "record.wav"
+	output := wav.GetWavData(audio_file)
+	wav.ReformatWav(audio_file, uint(output))
+	spec := spectrogram.CreateSpec(audio_file)
+	peaks, err := spectrogram.SpectrogramToImg(spec, "image.png")
+	if err != nil {
+		fmt.Print("Error", err)
+	}
+	fingerprint.CreateHash(peaks)
+	//need to fix createhash
 
 }
