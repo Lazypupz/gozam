@@ -25,7 +25,7 @@ func CreateHash(freqArray []float64) map[keyFreq]float64 {
 
 	sampleRate := 44100 // Sample rate in Hz
 	hopSize := 1024
-
+	HashTable := new(map[keyFreq]float64)
 	for i := 0; i < len(freqArray); i++ {
 		time_dif := 0.0
 		freq1 := freqArray[i]
@@ -37,7 +37,8 @@ func CreateHash(freqArray []float64) map[keyFreq]float64 {
 		}
 		hashTable := make(map[keyFreq]float64)
 		hashTable[keyFreq{peakFreq: freq1, targetFreq: freq2}] = time_dif
-		return hashTable
+		HashTable = hashTable
 	}
+	// cant finish this until db
 
 }
