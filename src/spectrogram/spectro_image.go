@@ -9,7 +9,7 @@ import (
 	"os"
 )
 
-func SpectrogramToImg(spectrogram [][]complex128, outputPath string) ([][]float64, error) {
+func SpectrogramToImg(spectrogram [][]complex128, outputPath string) ([][]complex128, error) {
 
 	numWindows := len(spectrogram)
 	freqBins := len(spectrogram[0])
@@ -30,24 +30,6 @@ func SpectrogramToImg(spectrogram [][]complex128, outputPath string) ([][]float6
 			magnitude := cmplx.Abs(spectrogram[i][j])
 			intensity := uint8(math.Floor(255 * (magnitude / maxMagnitude)))
 			img.SetGray(j, i, color.Gray{Y: intensity})
-		}
-	}
-	realSpec := convert_spec_to_float(spectrogram)
-
-	peaks := make([][]float64, len(spectrogram))
-	for i, row := range spectrogram {
-		peaks[i] = make([]float64, len(row))
-
-	}
-
-	for i := 1; i < numWindows-1; i++ {
-		for j := 1; j < freqBins-1; j++ {
-			if isPeak(realSpec, i, j) {
-				peaks[i][j] = realSpec[i][j]
-			}
-			if !isPeak(realSpec, i, j) {
-				peaks[i][j] = math.NaN()
-			}
 
 		}
 	}
@@ -64,5 +46,5 @@ func SpectrogramToImg(spectrogram [][]complex128, outputPath string) ([][]float6
 		return nil, err
 
 	}
-	return peaks, nil
+	return spectrogram, nil
 }

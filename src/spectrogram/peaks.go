@@ -1,44 +1,47 @@
 package spectrogram
 
-import "math"
+import (
+	"math/cmplx"
+)
 
-func convert_spec_to_float(spectrogram [][]complex128) [][]float64 {
+func ExtractPeaks(spectrogram [][]complex128) [][]int {
+	var peaks [][]int
 
-	convertedSpectrogram := make([][]float64, len(spectrogram))
-	for i, row := range spectrogram {
-		convertedSpectrogram[i] = make([]float64, len(row))
-		for j, col := range row {
-			convertedSpectrogram[i][j] = math.Sqrt(real(col)*real(col)+imag(col)*imag(col)) * 1000
+	for i := 1; i < len(spectrogram); i++ {
+		for j := 1; j < len(spectrogram[i]); j++ {
+			magnitude := cmplx.Abs(spectrogram[i][j])
+			if isPeak(spectrogram, i, j, magnitude) {
+				peaks = append(peaks, []int{i, j})
+			}
 		}
 	}
-	return convertedSpectrogram
+	return peaks
 }
 
-func isPeak(data [][]float64, i, j int) bool {
+func isPeak(spectrogram [][]complex128, i, j int, magnitude float64) bool {
 	// get number of rows and columns
-	rows := len(data)
-	cols := len(data[0])
+
+	rows := len(spectrogram)
+	cols := len(spectrogram[0])
 
 	//the current value
-	val := data[i][j]
 
 	//check neighbors (left, right, up, down, diagonal)
 
-	for di := -1; di <= 1; di++ {
-		for dj := -1; dj <= 1; dj++ {
-			if di == 0 && dj == 0 {
-				continue
-			}
-
-			ni, nj := i+di, j+dj
-
+	for di := i - 1; di <= i+1; di++ {
+		for dj := j - 1; dj <= j+1; dj++ {
 			//check if within bounds
-			if ni >= 0 && ni < rows && nj >= 0 && nj < cols {
-				if val <= data[ni][nj] {
-					// if any neighbour is larger ... not a peak
+			if di >= 0 && di < rows && dj >= 0 && dj < cols {
+				if di == i && dj == j {
+					continue
+				}
+
+				neightbourMagnitude := cmplx.Abs(spectrogram[i][j])
+				if magnitude < neightbourMagnitude {
 					return false
 				}
 			}
+
 		}
 	}
 

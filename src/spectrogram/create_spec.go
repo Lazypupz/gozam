@@ -11,7 +11,7 @@ import (
 	"github.com/r9y9/gossp/window"
 )
 
-func CreateSpec(inputFile string) [][]complex128 {
+func CreateSpectrogram(inputFile string) [][]complex128 {
 	test_recording := flag.String("i", "../recording.wav", inputFile)
 	flag.Parse()
 
@@ -51,20 +51,10 @@ func CreateSpec(inputFile string) [][]complex128 {
 
 	s := &stft.STFT{
 		FrameShift: int(float64(decoder.SampleRate) / 100.0),
-		FrameLen:   2048,
-		Window:     window.CreateHanning(2048),
+		FrameLen:   1024,
+		Window:     window.CreateHanning(1024),
 	}
 	spectrogram := s.STFT(data)
-	//convertedSpectrogram := make([][]float64, len(spectrogram))
-	/*for i, row := range spectrogram {
-		convertedSpectrogram[i] = make([]float64, len(row))
-		for j, val := range row {
-			// Use the magnitude of the complex number
-			convertedSpectrogram[i][j] = math.Sqrt(real(val)*real(val) + imag(val)*imag(val)) // Magnitude squared (can use sqrt() for actual magnitude)
-		}
-	} */
 
-	//PrintMatrixAsGnuplotFormat(convertedSpectrogram) // need to fix this shit why am i stuck is this hard
-	//nvm gpt came in clutch :)
 	return spectrogram
 }

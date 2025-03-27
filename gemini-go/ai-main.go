@@ -52,6 +52,8 @@ func Get_Song_Recommendation(apiKey string, songName, artistName string) ([]Song
 
 	return responseData.RecommendedSongs, nil
 }
+
+/*
 func debugPrint[T any](r *T) {
 	response, err := json.MarshalIndent(*r, "", " ")
 	if err != nil {
@@ -59,3 +61,4 @@ func debugPrint[T any](r *T) {
 	}
 	fmt.Println(response)
 }
+*/

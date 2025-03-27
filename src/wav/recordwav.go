@@ -16,7 +16,7 @@ func Record(outputFile string) {
 		"-f",
 		"dshow",
 		"-i",
-		"audio=Microphone (USB Microphone)",
+		"audio=Microphone Array",
 		"-t",
 		"5",
 		outputFile,
