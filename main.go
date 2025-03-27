@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"os"
 
-	"github.com/Lazypupz/gozam/src/fingerprint"
-	"github.com/Lazypupz/gozam/src/spectrogram"
-	"github.com/Lazypupz/gozam/src/wav"
+	googleAI "github.com/Lazypupz/gozam/gemini-go"
+	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -26,7 +27,7 @@ func main() {
 	*/
 
 	//wav.Record("recording.wav")
-	audio_file := "record.wav"
+	/*audio_file := "record.wav"
 	output := wav.GetWavData(audio_file)
 	wav.ReformatWav(audio_file, uint(output))
 	spec := spectrogram.CreateSpec(audio_file)
@@ -36,5 +37,21 @@ func main() {
 	}
 	fingerprint.CreateHash(peaks)
 	//need to fix createhash
+	*/
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Error loading env file")
+	}
+
+	apiKey := os.Getenv("GEMINI_API_KEY")
+	if apiKey == "" {
+		log.Fatal("API key is not set in env")
+	}
+	text, songErr := googleAI.Get_Song_Recommendation(apiKey, "Dont Stop me now", "Queen")
+	if songErr != nil {
+		log.Fatal("Didnt work lil bro:", songErr)
+	}
+	fmt.Println(text)
 
 }

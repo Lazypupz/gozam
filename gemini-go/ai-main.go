@@ -47,9 +47,10 @@ func Get_Song_Recommendation(apiKey string, songName, artistName string) ([]Song
 	var responseData ResponseData
 	err = json.Unmarshal([]byte(textResult), &responseData)
 	if err != nil {
-
+		return nil, err
 	}
 
+	return responseData.RecommendedSongs, nil
 }
 func debugPrint[T any](r *T) {
 	response, err := json.MarshalIndent(*r, "", " ")
