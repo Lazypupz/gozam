@@ -11,13 +11,13 @@ import (
 	"github.com/r9y9/gossp/window"
 )
 
-func CreateSpectrogram(inputFile string) [][]complex128 {
-	test_recording := flag.String("i", "../recording.wav", inputFile)
+func CreateSpectrogram() [][]complex128 {
+	test_recording := flag.String("i", "C:/Users/anton/Documents/GitHub/gozam/src/spectrogram/Recording.wav", "Recording.wav")
 	flag.Parse()
 
 	file, err := os.Open(*test_recording)
 	if err != nil {
-		log.Fatal("Error opening WAV file:", err)
+		log.Fatal("(CreateSpectrogram) Error opening WAV file:", err)
 	}
 	defer file.Close()
 

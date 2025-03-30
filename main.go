@@ -25,11 +25,10 @@ func main() {
 	}
 	*/
 
-	wav.Record("recording.wav")
-	audio_file := "record.wav"
+	audio_file := "C:/Users/anton/Documents/GitHub/gozam/src/spectrogram/Recording.wav"
 	output := wav.GetWavData(audio_file)
 	wav.ReformatWav(audio_file, uint(output))
-	spec := spectrogram.CreateSpectrogram(audio_file)
+	spec := spectrogram.CreateSpectrogram()
 	specAgain, err := spectrogram.SpectrogramToImg(spec, "image.png")
 	peaks := spectrogram.ExtractPeaks(specAgain)
 	if err != nil {

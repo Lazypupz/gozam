@@ -17,3 +17,8 @@ func GenFingerPrint(peaks [][]int) []byte {
 	}
 	return hash.Sum(nil)
 }
+
+func MakeAddress(Hash []byte) []byte {
+
+	Hash = append(Hash)
+}

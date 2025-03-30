@@ -48,7 +48,7 @@ func GetWavData(inputFile string) int {
 
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		fmt.Println("Error", err)
+		fmt.Println("Error (getwavdata)", err)
 		return 0
 	}
 	// trims all white space
@@ -57,7 +57,7 @@ func GetWavData(inputFile string) int {
 	// coverts to int
 	cNum, cErr := strconv.Atoi(stringedOutput)
 	if cErr != nil {
-		fmt.Println("Error", cErr)
+		fmt.Println("Error (getwavdataint)", cErr)
 		return 0
 	}
 
