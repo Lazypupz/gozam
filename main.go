@@ -1,11 +1,7 @@
 package main
 
 import (
-	"fmt"
-
-	"github.com/Lazypupz/gozam/src/fingerprint"
-	"github.com/Lazypupz/gozam/src/spectrogram"
-	"github.com/Lazypupz/gozam/src/wav"
+	api "github.com/Lazypupz/gozam/serv"
 )
 
 func main() {
@@ -24,17 +20,24 @@ func main() {
 		}
 	}
 	*/
-
-	audio_file := "C:/Users/anton/Documents/GitHub/gozam/src/spectrogram/Recording.wav"
-	output := wav.GetWavData(audio_file)
-	wav.ReformatWav(audio_file, uint(output))
-	spec := spectrogram.CreateSpectrogram()
-	specAgain, err := spectrogram.SpectrogramToImg(spec, "image.png")
-	peaks := spectrogram.ExtractPeaks(specAgain)
-	if err != nil {
-		fmt.Print("Error", err)
-	}
-	fmt.Println(fingerprint.GenFingerPrint(peaks))
+	/*
+		audio_file := "C:/Users/anton/Documents/GitHub/gozam/src/spectrogram/Recording.wav"
+		output := wav.GetWavData(audio_file)
+		wav.ReformatWav(audio_file, uint(output))
+		spec := spectrogram.CreateSpectrogram()
+		specAgain, err := spectrogram.SpectrogramToImg(spec, "image.png")
+		peaks := spectrogram.ExtractPeaks(specAgain)
+		if err != nil {
+			fmt.Print("Error", err)
+		}
+		fpData, songID := fingerprint.GenFingerPrint(peaks)
+		err = fingerprint.SaveFingerprintToDB(fpData, songID)
+		if err != nil {
+			fmt.Println("Error saving fingerprint to DB:", err)
+		} else {
+			fmt.Println("Fingerprint saved to DB successfully")
+		}
+	*/
 	//need to fix createhash
 
 	/*
@@ -52,5 +55,8 @@ func main() {
 			log.Fatal("Didnt work lil bro:", songErr)
 		}
 		fmt.Println(text) */
+
+	server := api.NewServer(":8080")
+	server.Run()
 
 }
