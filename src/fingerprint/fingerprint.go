@@ -19,11 +19,8 @@ const (
 func GenFingerPrint(peaks [][]int) ([]byte, string) {
 
 	hash := fnv.New64a()
-
 	for _, peak := range peaks {
-
 		peakStr := fmt.Sprintf("%d-%d", peak[0], peak[1])
-
 		hash.Write([]byte(peakStr))
 	}
 
@@ -50,7 +47,6 @@ func SaveFingerprintToDB(fingerprint []byte, songID string) error {
 	}
 	defer db.Close()
 
-	// Insert fingerprint and songID into the database
 	query := `INSERT INTO fingerprints (fingerprint, song_id) VALUES ($1, $2)`
 	_, err = db.Exec(query, fingerprint, songID)
 	if err != nil {

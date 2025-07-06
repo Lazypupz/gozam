@@ -11,6 +11,12 @@ import (
 func Record(outputFile string) {
 
 	//if windows
+	//need to add for linux and mac
+
+	if _, err := exec.LookPath("ffmpeg"); err != nil {
+		fmt.Println("ffmpeg not installed or not found in system PATH")
+		return
+	}
 	cmd := exec.Command(
 		"ffmpeg",
 		"-f",

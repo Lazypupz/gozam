@@ -30,7 +30,7 @@ func isPeak(spectrogram [][]complex128, i, j int, magnitude float64) bool {
 
 	for di := i - 1; di <= i+1; di++ {
 		for dj := j - 1; dj <= j+1; dj++ {
-			//check if within bounds
+			//check if inbounds
 			if di >= 0 && di < rows && dj >= 0 && dj < cols {
 				if di == i && dj == j {
 					continue
@@ -45,6 +45,6 @@ func isPeak(spectrogram [][]complex128, i, j int, magnitude float64) bool {
 		}
 	}
 
-	// If no neighbors are larger ...  it's a peak
+	// If no neighbors are larger...  it's a peak
 	return true
 }
